@@ -66,7 +66,7 @@ public class BoardManager : MonoBehaviour
     public CellData GetCellData(Vector2Int cellIdx)
     {
         // 이동 불가능 셀 예외 처리
-        if(cellIdx.x < 0 || cellIdx.x >= 0 || cellIdx.y < 0 || cellIdx.y >= height)
+        if(cellIdx.x < 0 || cellIdx.x >= width || cellIdx.y < 0 || cellIdx.y >= height)
         {
             return null;
         }

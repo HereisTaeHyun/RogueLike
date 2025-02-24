@@ -44,9 +44,6 @@ public class PlayerCtrl : MonoBehaviour
         {
             // 이동 가능하면 이동
             BoardManager.CellData cellData = board.GetCellData(newCellTarget);
-            Debug.Log(cellPos);
-
-            Debug.Log(cellData);
             if(cellData != null && cellData.Passable)
             {
                 cellPos = newCellTarget;
