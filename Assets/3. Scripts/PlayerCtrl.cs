@@ -49,6 +49,11 @@ public class PlayerCtrl : MonoBehaviour
                 GameManager.Instance.turnManager.Tick();
                 cellPos = newCellTarget;
                 transform.position = board.CellToWorld(cellPos);
+
+                if(cellData.ContainedObject != null)
+                {
+                    cellData.ContainedObject.PlayerEntered();
+                }
             }
         }
     }
