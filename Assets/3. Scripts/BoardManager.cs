@@ -19,7 +19,7 @@ public class BoardManager : MonoBehaviour
     public Tile[] GroundTiles;
     public Tile[] WallTiles;
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
         tilemap = GetComponentInChildren<Tilemap>();
         grid = GetComponentInChildren<Grid>();
@@ -47,9 +47,6 @@ public class BoardManager : MonoBehaviour
                 tilemap.SetTile(new Vector3Int(x, y, 0), tile);
             }
         }
-
-        // BoardManage 스크립트가 붙은 모드 1, 1에 플레이어 생성
-        playerCtrl.Spawn(this, new Vector2Int(1, 1));
     }
 
     // Update is called once per frame

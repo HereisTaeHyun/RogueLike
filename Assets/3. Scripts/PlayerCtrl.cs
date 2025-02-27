@@ -46,6 +46,7 @@ public class PlayerCtrl : MonoBehaviour
             BoardManager.CellData cellData = board.GetCellData(newCellTarget);
             if(cellData != null && cellData.Passable)
             {
+                GameManager.Instance.turnManager.Tick();
                 cellPos = newCellTarget;
                 transform.position = board.CellToWorld(cellPos);
             }
