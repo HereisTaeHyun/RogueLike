@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -36,10 +37,14 @@ public class GameManager : MonoBehaviour
         foodLabel.text = $"Food : {foodAmount}";
     }
 
-    private void OnTurnHappen()
+    public void OnTurnHappen()
     {
-        foodAmount -= 1;
-        Debug.Log($"Current Food {foodAmount}");
+        ChangeFood(-1);
+    }
+
+    public void ChangeFood(int amount)
+    {
+        foodAmount += amount;
         foodLabel.text = $"Food : {foodAmount}";
     }
 }

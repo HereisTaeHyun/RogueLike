@@ -22,6 +22,8 @@ public class BoardManager : MonoBehaviour
     public Tile[] GroundTiles;
     public Tile[] WallTiles;
 
+    public WallObject wallPrefab;
+
     public int leastFood;
     public int maximumFood;
     // Start is called before the first frame update
@@ -57,6 +59,7 @@ public class BoardManager : MonoBehaviour
         }
 
         EmptyCell.Remove(new Vector2Int(1, 1));
+        GenerateWall();
         GenerateFood();
     }
 
@@ -69,6 +72,16 @@ public class BoardManager : MonoBehaviour
     public Vector3 CellToWorld(Vector2Int cellIdx)
     {
         return grid.GetCellCenterWorld((Vector3Int)cellIdx);
+    }
+
+    public void SetCellTile(Vector2Int cellIndex, Tile tile)
+    {
+        tilemap.SetTile(new Vector3Int(cellIndex.x, cellIndex.y), tile);
+    }
+
+    public Tile GetCellTile(Vector2Int cellIndex)
+    {
+        return tilemap.GetTile<Tile>(new Vector3Int(cellIndex.x, cellIndex.y, 0));
     }
 
     public CellData GetCellData(Vector2Int cellIdx)
@@ -91,15 +104,33 @@ public class BoardManager : MonoBehaviour
         {
             int randomIndex = Random.Range(0, EmptyCell.Count);
             Vector2Int coord = EmptyCell[randomIndex];
-
             EmptyCell.RemoveAt(randomIndex);
-            CellData data = BoardData[coord.x, coord.y];
 
             int foodChoose = Random.Range(0, foodPrefabs.Length);
-
             FoodObject newFood = Instantiate(foodPrefabs[foodChoose]);
-            newFood.transform.position = CellToWorld(coord);
-            data.ContainedObject = newFood;
+            AddObject(newFood, coord);
         }
+    }
+
+    private void GenerateWall()
+    {
+        int wallCount = Random.Range(6, 10);
+        for(int i = 0; i <wallCount; i++)
+        {
+            int randomIndex = Random.Range(0, EmptyCell.Count);
+            Vector2Int coord = EmptyCell[randomIndex];
+            EmptyCell.RemoveAt(randomIndex);
+
+            WallObject newWall = Instantiate(wallPrefab);
+            AddObject(newWall, coord);
+        }
+    }
+
+    private void AddObject(CellObject obj, Vector2Int coord)
+    {
+        CellData data = BoardData[coord.x, coord.y];
+        obj.transform.position = CellToWorld(coord);
+        data.ContainedObject = obj;
+        obj.Init(coord);
     }
 }

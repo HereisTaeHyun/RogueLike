@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,11 +48,16 @@ public class PlayerCtrl : MonoBehaviour
             if(cellData != null && cellData.Passable)
             {
                 GameManager.Instance.turnManager.Tick();
-                cellPos = newCellTarget;
-                transform.position = board.CellToWorld(cellPos);
 
-                if(cellData.ContainedObject != null)
+                if(cellData.ContainedObject == null)
                 {
+                    cellPos = newCellTarget;
+                    transform.position = board.CellToWorld(cellPos);
+                }
+                else if(cellData.ContainedObject.PlayerWantsToEnter())
+                {
+                    cellPos = newCellTarget;
+                    transform.position = board.CellToWorld(cellPos);
                     cellData.ContainedObject.PlayerEntered();
                 }
             }
