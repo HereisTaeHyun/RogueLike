@@ -8,15 +8,29 @@ public class PlayerCtrl : MonoBehaviour
 {
     private BoardManager board;
     private Vector2Int cellPos;
+    private bool gameOver;
     // Start is called before the first frame update
     void Start()
     {
         
     }
 
+    public void Init()
+    {
+        gameOver = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if(gameOver == true)
+        {
+            if(Keyboard.current.enterKey.wasPressedThisFrame)
+            {
+                GameManager.Instance.StartNewGame();
+            }
+            return;
+        }
         Vector2Int newCellTarget = cellPos;
         bool hasmoved = false;
 
@@ -77,5 +91,10 @@ public class PlayerCtrl : MonoBehaviour
         // CellToWorld로 보드 위 cell 상에 Player 위치 지정
         // CellToWorld는 Cell 좌표로 World 좌표로 변환
         transform.position = board.CellToWorld(cellPos);
+    }
+
+    public void OnGameOver()
+    {
+        gameOver = true;
     }
 }

@@ -6,16 +6,27 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+#region public
     public static GameManager Instance {get; private set;}
     public TurnManager turnManager {get; private set;}
 
     public BoardManager boardManager;
     public PlayerCtrl playerCtrl;
     public UIDocument UIdoc;
+#endregion
+
+#region private
+    private const int START_FOOD_AMOUNT = 20;
 
     private int currentLevel = 1;
     private Label foodLabel;
-    private int foodAmount = 100;
+    private int foodAmount = 20;
+
+    private VisualElement gameOverPanel;
+    private Label gameOverMessage;
+#endregion
+
+#region singleton
     void Awake()
     {
         if(Instance != null)
@@ -25,18 +36,22 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
     }
+#endregion
+
     void Start()
     {
         turnManager = new TurnManager();
         turnManager.OnTick += OnTurnHappen;
-        
-        NewLevel();
+
+        gameOverPanel = UIdoc.rootVisualElement.Q<VisualElement>("GameOverPanel");
+        gameOverMessage = gameOverPanel.Q<Label>("GameOverMessage");
 
         foodLabel = UIdoc.rootVisualElement.Q<Label>("FoodLabel");
-        foodLabel.text = $"Food : {foodAmount}";
+
+        StartNewGame();
     }
 
-    // Turn이 발생할때바다 음식을 감소
+    // Turn이 발생할때바다 음식을 감소, OnTurnHappen은 turnManager event에 제어됨
     public void OnTurnHappen()
     {
         ChangeFood(-1);
@@ -45,14 +60,35 @@ public class GameManager : MonoBehaviour
     {
         foodAmount += amount;
         foodLabel.text = $"Food : {foodAmount}";
+
+        if (foodAmount <= 0)
+        {
+            gameOverPanel.style.visibility = Visibility.Visible;
+            gameOverMessage.text = $"Game Over ! \n\n You Traveled {currentLevel} Days ! \n\n Press Enter To Start New Game ! ";
+            playerCtrl.OnGameOver();
+        }
     }
 
+    // 다음 레벨로 이동
     public void NewLevel()
     {
         boardManager.ResetField();
         boardManager.Init();
-        playerCtrl.Spawn(boardManager, new Vector2Int(1, 1));
 
+        playerCtrl.Spawn(boardManager, new Vector2Int(1, 1));
         currentLevel += 1;
+    }
+
+    // 변수 초기화 후 새 게임 시작
+    public void StartNewGame()
+    {
+        gameOverPanel.style.visibility = Visibility.Hidden;
+        foodLabel.text = $"Food : {foodAmount}";
+
+        currentLevel = 0;
+        foodAmount = START_FOOD_AMOUNT;
+        playerCtrl.Init();
+
+        NewLevel();
     }
 }
