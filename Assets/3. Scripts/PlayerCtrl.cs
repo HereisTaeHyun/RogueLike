@@ -51,17 +51,21 @@ public class PlayerCtrl : MonoBehaviour
 
                 if(cellData.ContainedObject == null)
                 {
-                    cellPos = newCellTarget;
-                    transform.position = board.CellToWorld(cellPos);
+                    MoveTo(newCellTarget);
                 }
                 else if(cellData.ContainedObject.PlayerWantsToEnter())
                 {
-                    cellPos = newCellTarget;
-                    transform.position = board.CellToWorld(cellPos);
+                    MoveTo(newCellTarget);
                     cellData.ContainedObject.PlayerEntered();
                 }
             }
         }
+    }
+
+    public void MoveTo(Vector2Int cell)
+    {
+        cellPos = cell;
+        transform.position = board.CellToWorld(cellPos);
     }
 
     public void Spawn(BoardManager boardManager, Vector2Int cell)

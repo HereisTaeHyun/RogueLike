@@ -23,9 +23,9 @@ public class WallObject : CellObject
         {
             int tileType = Random.Range(0, obstacleTiles.Length);
             GameManager.Instance.boardManager.SetCellTile(inputCell, obstacleTiles[tileType]);
-            
         }
     }
+    
     public override void PlayerEntered()
     {
         base.PlayerEntered();

@@ -23,6 +23,7 @@ public class BoardManager : MonoBehaviour
     public Tile[] WallTiles;
 
     public WallObject wallPrefab;
+    public ExitCellObject ExitCellPrefab;
 
     public int leastFood;
     public int maximumFood;
@@ -58,7 +59,15 @@ public class BoardManager : MonoBehaviour
             }
         }
 
+        // player가 위치한 1, 1은 미사용
         EmptyCell.Remove(new Vector2Int(1, 1));
+
+        // 출구 설정
+        Vector2Int endCoord = new Vector2Int(width - 2, height - 2);
+        ExitCellObject newExit = Instantiate(ExitCellPrefab);
+        AddObject(newExit, endCoord);
+        EmptyCell.Remove(endCoord);
+
         GenerateWall();
         GenerateFood();
     }
@@ -69,21 +78,25 @@ public class BoardManager : MonoBehaviour
         
     }
 
+    // 좌표 가져오기
     public Vector3 CellToWorld(Vector2Int cellIdx)
     {
         return grid.GetCellCenterWorld((Vector3Int)cellIdx);
     }
 
+    // Cell 타일 배치
     public void SetCellTile(Vector2Int cellIndex, Tile tile)
     {
         tilemap.SetTile(new Vector3Int(cellIndex.x, cellIndex.y), tile);
     }
 
+    // Cell 타일 가져오기
     public Tile GetCellTile(Vector2Int cellIndex)
     {
         return tilemap.GetTile<Tile>(new Vector3Int(cellIndex.x, cellIndex.y, 0));
     }
 
+    // Cell 데이터 획득하기
     public CellData GetCellData(Vector2Int cellIdx)
     {
         // 이동 불가능 셀 예외 처리
@@ -96,6 +109,7 @@ public class BoardManager : MonoBehaviour
         return BoardData[cellIdx.x, cellIdx.y];
     }
 
+    // 음식 생성
     private void GenerateFood()
     {
         int foodCount = Random.Range(leastFood, maximumFood + 1);
@@ -112,6 +126,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    // 벽 생성
     private void GenerateWall()
     {
         int wallCount = Random.Range(6, 10);
@@ -126,11 +141,35 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    // 맵 위에 오브젝트 추기
+    // data를 가져오고 오브젝트에 위치, 데이터를 넣은 후 맵에 Init으로 배치
+    // CellObject 하위 타겟들이 주로 사용함
     private void AddObject(CellObject obj, Vector2Int coord)
     {
         CellData data = BoardData[coord.x, coord.y];
         obj.transform.position = CellToWorld(coord);
         data.ContainedObject = obj;
         obj.Init(coord);
+    }
+
+    // 다음 레벨을 가게 하기 위헤 타일 리셋
+    public void ResetField()
+    {
+        if(BoardData == null)
+        {
+            return;
+        }
+        for(int y = 0; y < height; y++)
+        {
+            for(int x = 0; x < width; x++)
+            {
+                var cellData = BoardData[x, y];
+                if (cellData.ContainedObject != null)
+                {
+                    Destroy(cellData.ContainedObject.gameObject);
+                }
+                SetCellTile(new Vector2Int(x, y), null);
+            }
+        }
     }
 }

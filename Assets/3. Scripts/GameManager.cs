@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public PlayerCtrl playerCtrl;
     public UIDocument UIdoc;
 
+    private int currentLevel = 1;
     private Label foodLabel;
     private int foodAmount = 100;
     void Awake()
@@ -29,22 +30,29 @@ public class GameManager : MonoBehaviour
         turnManager = new TurnManager();
         turnManager.OnTick += OnTurnHappen;
         
-        // Board 생성 후 BoardManage 스크립트가 붙은 모드 1, 1에 플레이어 생성
-        boardManager.Init();
-        playerCtrl.Spawn(boardManager, new Vector2Int(1, 1));
+        NewLevel();
 
         foodLabel = UIdoc.rootVisualElement.Q<Label>("FoodLabel");
         foodLabel.text = $"Food : {foodAmount}";
     }
 
+    // Turn이 발생할때바다 음식을 감소
     public void OnTurnHappen()
     {
         ChangeFood(-1);
     }
-
     public void ChangeFood(int amount)
     {
         foodAmount += amount;
         foodLabel.text = $"Food : {foodAmount}";
+    }
+
+    public void NewLevel()
+    {
+        boardManager.ResetField();
+        boardManager.Init();
+        playerCtrl.Spawn(boardManager, new Vector2Int(1, 1));
+
+        currentLevel += 1;
     }
 }

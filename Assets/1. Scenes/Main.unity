@@ -629,5 +629,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 33b953bd7d32f1d45ae2b50522e75bc7, type: 2}
   - {fileID: 11400000, guid: fd28ca5b903d9ac4d9832dae06e9f869, type: 2}
   wallPrefab: {fileID: 2217995375363096481, guid: 26da8e0f645a7ba498e34f6db4c9605a, type: 3}
+  ExitCellPrefab: {fileID: 6386819071960367630, guid: c75ba5446435ac045b1983a572db07ed, type: 3}
   leastFood: 0
   maximumFood: 10
