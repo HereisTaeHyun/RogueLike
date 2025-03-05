@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleTiles:
+  - {fileID: 11400000, guid: 33b953bd7d32f1d45ae2b50522e75bc7, type: 2}
+  - {fileID: 11400000, guid: fd28ca5b903d9ac4d9832dae06e9f869, type: 2}
   - {fileID: 11400000, guid: 7270e937bc6d1d147a5f0aa711b2fa88, type: 2}
-  - {fileID: 11400000, guid: bae9e1d822a904e418ec00759ad4c6ee, type: 2}
   brokenTile: {fileID: 11400000, guid: b6d7ad4d0b937b643946cc95de1713bd, type: 2}
-  maxHealth: 3
+  maxHealth: 6

@@ -7,7 +7,7 @@ public class WallObject : CellObject
 {
     public Tile[] obstacleTiles;
     public Tile brokenTile;
-    public int maxHealth = 3;
+    public int maxHealth = 6;
 
     private int healthPoint;
     private Tile originTile;
@@ -33,7 +33,7 @@ public class WallObject : CellObject
     public override bool PlayerWantsToEnter()
     {
         healthPoint -= 1;
-        if(healthPoint == 1)
+        if(healthPoint == 2)
         {
             GameManager.Instance.boardManager.SetCellTile(cell, brokenTile);
         }
