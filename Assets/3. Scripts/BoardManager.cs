@@ -15,6 +15,7 @@ public class BoardManager : MonoBehaviour
     private List<Vector2Int> EmptyCell;
     private Grid grid;
 
+    public EnemyObject enemyPrefab;
     public FoodObject[] foodPrefabs;
     public PlayerCtrl playerCtrl;
     public int width;
@@ -27,6 +28,9 @@ public class BoardManager : MonoBehaviour
 
     public int leastFood;
     public int maximumFood;
+
+    public int leastEnemy;
+    public int maximumEnemy;
     // Start is called before the first frame update
     public void Init()
     {
@@ -70,6 +74,7 @@ public class BoardManager : MonoBehaviour
 
         GenerateWall();
         GenerateFood();
+        GenerateEnemy();
     }
 
     // Update is called once per frame
@@ -138,6 +143,21 @@ public class BoardManager : MonoBehaviour
 
             WallObject newWall = Instantiate(wallPrefab);
             AddObject(newWall, coord);
+        }
+    }
+
+    private void GenerateEnemy()
+    {
+        int enemyCount = Random.Range(leastEnemy, maximumEnemy + 1);
+
+        for(int i = 0; i < enemyCount; i++)
+        {
+            int randomIndex = Random.Range(0, EmptyCell.Count);
+            Vector2Int coord = EmptyCell[randomIndex];
+            EmptyCell.RemoveAt(randomIndex);
+
+            EnemyObject newEnemy = Instantiate(enemyPrefab);
+            AddObject(newEnemy, coord);
         }
     }
 

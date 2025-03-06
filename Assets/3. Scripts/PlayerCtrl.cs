@@ -9,7 +9,10 @@ public class PlayerCtrl : MonoBehaviour
     public float moveSpeed = 5.0f;
 
     private BoardManager board;
+
     private Vector2Int cellPos;
+    public Vector2Int readCellPos {get {return cellPos;}}
+
     private bool gameOver;
     private bool isMoving;
     private Vector3 moveTarget; 
@@ -95,14 +98,16 @@ public class PlayerCtrl : MonoBehaviour
                 {
                     MoveTo(newCellTarget, false);
                 }
-                else if(cellData.ContainedObject.PlayerWantsToEnter())
+                else
                 {
-                    MoveTo(newCellTarget, false);
-                }
-                else if(!cellData.ContainedObject.PlayerWantsToEnter())
-                {
-                    playerAnim.SetTrigger(BreakWallHash);
-                    // MoveTo(newCellTarget, false);
+                    if(cellData.ContainedObject.PlayerWantsToEnter())
+                    {
+                        MoveTo(newCellTarget, false);
+                    }
+                    else
+                    {
+                        playerAnim.SetTrigger(BreakWallHash);
+                    }
                 }
             }
         }

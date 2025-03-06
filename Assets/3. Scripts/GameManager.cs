@@ -16,11 +16,11 @@ public class GameManager : MonoBehaviour
 #endregion
 
 #region private
-    private const int START_FOOD_AMOUNT = 20;
+    private const int START_FOOD_AMOUNT = 100;
 
     private int currentLevel = 1;
     private Label foodLabel;
-    private int foodAmount = 20;
+    private int foodAmount;
 
     private VisualElement gameOverPanel;
     private Label gameOverMessage;
