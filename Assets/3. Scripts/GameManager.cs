@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private const int START_FOOD_AMOUNT = 100;
 
     private int currentLevel = 1;
+    public int readCurrentLevel {get {return currentLevel;}}
     private Label foodLabel;
     private int foodAmount;
 
@@ -64,7 +65,7 @@ public class GameManager : MonoBehaviour
         if (foodAmount <= 0)
         {
             gameOverPanel.style.visibility = Visibility.Visible;
-            gameOverMessage.text = $"Game Over ! \n\n You Traveled {currentLevel} Days ! \n\n Press Enter To Start New Game ! ";
+            gameOverMessage.text = $"Game Over ! \n\n You Survived {currentLevel} Days ! \n\n Press Enter To Start New Game ! ";
             playerCtrl.OnGameOver();
         }
     }

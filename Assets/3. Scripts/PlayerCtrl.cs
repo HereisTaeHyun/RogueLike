@@ -7,8 +7,11 @@ using UnityEngine.InputSystem;
 public class PlayerCtrl : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
+    public AudioClip walkClip;
+    public AudioClip breakingWallClip;
 
     private BoardManager board;
+    private AudioSource audioSource;
 
     private Vector2Int cellPos;
     public Vector2Int readCellPos {get {return cellPos;}}
@@ -24,6 +27,7 @@ public class PlayerCtrl : MonoBehaviour
     void Awake()
     {
         playerAnim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Init()
@@ -96,16 +100,19 @@ public class PlayerCtrl : MonoBehaviour
                 GameManager.Instance.turnManager.Tick();
                 if(cellData.ContainedObject == null)
                 {
+                    audioSource.PlayOneShot(walkClip);
                     MoveTo(newCellTarget, false);
                 }
                 else
                 {
                     if(cellData.ContainedObject.PlayerWantsToEnter())
                     {
+                        audioSource.PlayOneShot(walkClip);
                         MoveTo(newCellTarget, false);
                     }
                     else
                     {
+                        audioSource.PlayOneShot(breakingWallClip);
                         playerAnim.SetTrigger(BreakWallHash);
                     }
                 }

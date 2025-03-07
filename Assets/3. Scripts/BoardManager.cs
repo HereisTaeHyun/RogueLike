@@ -14,6 +14,7 @@ public class BoardManager : MonoBehaviour
     private CellData[,] BoardData;
     private List<Vector2Int> EmptyCell;
     private Grid grid;
+    private int currentLevel;
 
     public EnemyObject enemyPrefab;
     public FoodObject[] foodPrefabs;
@@ -26,11 +27,11 @@ public class BoardManager : MonoBehaviour
     public WallObject wallPrefab;
     public ExitCellObject ExitCellPrefab;
 
-    public int leastFood;
-    public int maximumFood;
+    public int leastFood = 0;
+    public int maximumFood = 20;
 
-    public int leastEnemy;
-    public int maximumEnemy;
+    public int leastEnemy = 0;
+    public int maximumEnemy = 0;
     // Start is called before the first frame update
     public void Init()
     {
@@ -71,6 +72,8 @@ public class BoardManager : MonoBehaviour
         ExitCellObject newExit = Instantiate(ExitCellPrefab);
         AddObject(newExit, endCoord);
         EmptyCell.Remove(endCoord);
+
+        currentLevel = GameManager.Instance.readCurrentLevel;
 
         GenerateWall();
         GenerateFood();
@@ -117,6 +120,10 @@ public class BoardManager : MonoBehaviour
     // 음식 생성
     private void GenerateFood()
     {
+        if(currentLevel > 0 && currentLevel % 3 == 0)
+        {
+            maximumFood -= 2;
+        }
         int foodCount = Random.Range(leastFood, maximumFood + 1);
 
         for(int i = 0; i < foodCount; i++)
@@ -134,7 +141,7 @@ public class BoardManager : MonoBehaviour
     // 벽 생성
     private void GenerateWall()
     {
-        int wallCount = Random.Range(6, 10);
+        int wallCount = Random.Range(24, 40);
         for(int i = 0; i <wallCount; i++)
         {
             int randomIndex = Random.Range(0, EmptyCell.Count);
@@ -148,6 +155,11 @@ public class BoardManager : MonoBehaviour
 
     private void GenerateEnemy()
     {
+        if(currentLevel > 0 && currentLevel % 3 == 0)
+        {
+            maximumEnemy += 2;
+        }
+
         int enemyCount = Random.Range(leastEnemy, maximumEnemy + 1);
 
         for(int i = 0; i < enemyCount; i++)

@@ -6,8 +6,11 @@ using UnityEngine;
 public class EnemyObject : CellObject
 {
     public int maxHealth = 3;
+    public AudioClip takeHitClip;
+
     private int healthPoint;
     private Animator enemyAnim;
+    private AudioSource audioSource;
     private int AttackHash = Animator.StringToHash("Attack");
 
     // 생성시 턴 매니저 등록
@@ -15,6 +18,7 @@ public class EnemyObject : CellObject
     {
         GameManager.Instance.turnManager.OnTick += TurnHappened;
         enemyAnim = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // 생성시 턴 매니저 등록 해제
@@ -32,6 +36,7 @@ public class EnemyObject : CellObject
     public override bool PlayerWantsToEnter()
     {
         healthPoint -= 1;
+        audioSource.PlayOneShot(takeHitClip);
         if(healthPoint > 0)
         {
             return false;
