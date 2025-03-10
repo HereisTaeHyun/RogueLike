@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,14 +14,18 @@ public class PlayerCtrl : MonoBehaviour
     private bool gameOver;
     private bool isMoving;
     private Vector3 moveTarget; 
+    private SpriteRenderer spriteRenderer;
     private Animator playerAnim;
     private int moveHash = Animator.StringToHash("Moving");
     private int BreakWallHash = Animator.StringToHash("BreakWall");
+    private Vector2Int newCellTarget;
+    private bool hasmoved;
 
     // Start is called before the first frame update
     void Awake()
     {
         playerAnim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void Init()
@@ -65,34 +66,35 @@ public class PlayerCtrl : MonoBehaviour
         }
 
         // 키보드 입력에 따라 이동
-        Vector2Int newCellTarget = cellPos;
-        bool hasmoved = false;
+        newCellTarget = cellPos;
+        hasmoved = false;
         if(Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            hasmoved = true;
+            MoveSkip();
         }
         else if(Keyboard.current.upArrowKey.wasPressedThisFrame)
         {
-            newCellTarget.y += 1;
-            hasmoved = true;
+            MoveUp();
         }
         else if(Keyboard.current.downArrowKey.wasPressedThisFrame)
         {
-            newCellTarget.y -= 1;
-            hasmoved = true;
+            MoveDown();
         }
         else if(Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
-            newCellTarget.x += 1;
-            hasmoved = true;
+            spriteRenderer.flipX = false;
+            MoveRight();
         }
         else if(Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
-            newCellTarget.x -= 1;
-            hasmoved = true;
+            spriteRenderer.flipX = true;
+            Moveleft();
         }
+    }
 
-        if(hasmoved)
+    private void UpdatePlayer()
+    {
+            if(hasmoved)
         {
             // 이동 가능하면 이동 = cellData.Passable하면 이동
             BoardManager.CellData cellData = board.GetCellData(newCellTarget);
@@ -155,5 +157,59 @@ public class PlayerCtrl : MonoBehaviour
     public void Attack()
     {
         playerAnim.SetTrigger(BreakWallHash);
+    }
+
+    public void MoveUp()
+    {
+        if(isMoving)
+        {
+            return;
+        }
+        newCellTarget.y += 1;
+        hasmoved = true;
+        UpdatePlayer();
+    }
+    public void MoveDown()
+    {
+        if(isMoving)
+        {
+            return;
+        }
+        newCellTarget.y -= 1;
+        hasmoved = true;
+        UpdatePlayer();
+    }
+    public void MoveRight()
+    {
+        if(isMoving)
+        {
+            return;
+        }
+        newCellTarget.x += 1;
+        hasmoved = true;
+        UpdatePlayer();
+    }
+    public void Moveleft()
+    {
+        if(isMoving)
+        {
+            return;
+        }
+        newCellTarget.x -= 1;
+        hasmoved = true;
+        UpdatePlayer();
+    }
+    public void MoveSkip()
+    {
+        if(gameOver)
+        {
+            GameManager.Instance.StartNewGame();
+        }
+        if(isMoving)
+        {
+            return;
+        }
+        hasmoved = true;
+        UpdatePlayer();
     }
 }

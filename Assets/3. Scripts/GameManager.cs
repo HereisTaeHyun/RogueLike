@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +10,7 @@ public class GameManager : MonoBehaviour
     public BoardManager boardManager;
     public PlayerCtrl playerCtrl;
     public UIDocument UIdoc;
+    public GameObject AndroidPanel;
 #endregion
 
 #region private
@@ -43,6 +40,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+#if UNITY_ANDROID
+    Camera camera = Camera.main;
+    camera.orthographicSize = 12;
+    camera.transform.position = new Vector3(6, 4, -10);
+    AndroidPanel.SetActive(true);
+#else
+    AndroidPanel.SetActive(false);
+#endif
         turnManager = new TurnManager();
         turnManager.OnTick += OnTurnHappen;
 
