@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 3
+  attackClip: {fileID: 8300000, guid: 0db8cac2749584a009540aa5671ee80d, type: 3}
   takeHitClip: {fileID: 8300000, guid: 114514a3b3697484ebaa08f7fbf842d3, type: 3}
 --- !u!95 &1280327439616651138
 Animator:

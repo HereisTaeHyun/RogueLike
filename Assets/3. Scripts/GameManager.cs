@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -22,6 +23,7 @@ public class GameManager : MonoBehaviour
     public int readCurrentLevel {get {return currentLevel;}}
     private Label foodLabel;
     private int foodAmount;
+    private AudioSource audioSource;
 
     private VisualElement gameOverPanel;
     private Label gameOverMessage;
@@ -48,6 +50,8 @@ public class GameManager : MonoBehaviour
         gameOverMessage = gameOverPanel.Q<Label>("GameOverMessage");
 
         foodLabel = UIdoc.rootVisualElement.Q<Label>("FoodLabel");
+
+        audioSource = GetComponent<AudioSource>();
 
         StartNewGame();
     }
@@ -91,5 +95,13 @@ public class GameManager : MonoBehaviour
         playerCtrl.Init();
 
         NewLevel();
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        if(clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
     }
 }

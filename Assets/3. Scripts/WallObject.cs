@@ -8,6 +8,8 @@ public class WallObject : CellObject
     public Tile[] obstacleTiles;
     public Tile brokenTile;
     public int maxHealth = 3;
+    public AudioClip BreakingClip;
+    public AudioClip BreakedClip;
 
     private int healthPoint;
     private Tile originTile;
@@ -33,6 +35,7 @@ public class WallObject : CellObject
     public override bool PlayerWantsToEnter()
     {
         healthPoint -= 1;
+        GameManager.Instance.PlaySound(BreakingClip);
         if(healthPoint == 1)
         {
             GameManager.Instance.boardManager.SetCellTile(cell, brokenTile);
@@ -43,6 +46,7 @@ public class WallObject : CellObject
         }
 
         GameManager.Instance.boardManager.SetCellTile(cell, originTile);
+        GameManager.Instance.PlaySound(BreakedClip);
         Destroy(gameObject);
         return true;
     }

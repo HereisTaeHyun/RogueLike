@@ -50,3 +50,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7270e937bc6d1d147a5f0aa711b2fa88, type: 2}
   brokenTile: {fileID: 11400000, guid: b6d7ad4d0b937b643946cc95de1713bd, type: 2}
   maxHealth: 3
+  BreakingClip: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
+  BreakedClip: {fileID: 8300000, guid: f6aaac83be9e0493493aace800b76619, type: 3}

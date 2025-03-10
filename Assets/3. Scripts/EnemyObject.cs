@@ -6,6 +6,7 @@ using UnityEngine;
 public class EnemyObject : CellObject
 {
     public int maxHealth = 3;
+    public AudioClip attackClip;
     public AudioClip takeHitClip;
 
     private int healthPoint;
@@ -36,7 +37,7 @@ public class EnemyObject : CellObject
     public override bool PlayerWantsToEnter()
     {
         healthPoint -= 1;
-        audioSource.PlayOneShot(takeHitClip);
+        GameManager.Instance.PlaySound(takeHitClip);
         if(healthPoint > 0)
         {
             return false;
@@ -105,6 +106,7 @@ public class EnemyObject : CellObject
         if((xDist == 0 && absYDist == 1) || (yDist == 0 && absXDist == 1))
         {
             enemyAnim.SetTrigger(AttackHash);
+            GameManager.Instance.PlaySound(attackClip);
             GameManager.Instance.ChangeFood(-3);
         }
         else

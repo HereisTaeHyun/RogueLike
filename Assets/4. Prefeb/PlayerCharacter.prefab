@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   walkClip: {fileID: 8300000, guid: 892962212a4b74d1c9f578a3b6ea6439, type: 3}
+  breakingWallClip: {fileID: 8300000, guid: 4c2332bc8245b474dad63074059bb755, type: 3}
 --- !u!95 &1335793352520060912
 Animator:
   serializedVersion: 5

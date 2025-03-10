@@ -8,10 +8,8 @@ public class PlayerCtrl : MonoBehaviour
 {
     public float moveSpeed = 5.0f;
     public AudioClip walkClip;
-    public AudioClip breakingWallClip;
 
     private BoardManager board;
-    private AudioSource audioSource;
 
     private Vector2Int cellPos;
     public Vector2Int readCellPos {get {return cellPos;}}
@@ -27,7 +25,6 @@ public class PlayerCtrl : MonoBehaviour
     void Awake()
     {
         playerAnim = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     public void Init()
@@ -70,7 +67,11 @@ public class PlayerCtrl : MonoBehaviour
         // 키보드 입력에 따라 이동
         Vector2Int newCellTarget = cellPos;
         bool hasmoved = false;
-        if(Keyboard.current.upArrowKey.wasPressedThisFrame)
+        if(Keyboard.current.spaceKey.wasPressedThisFrame)
+        {
+            hasmoved = true;
+        }
+        else if(Keyboard.current.upArrowKey.wasPressedThisFrame)
         {
             newCellTarget.y += 1;
             hasmoved = true;
@@ -100,19 +101,17 @@ public class PlayerCtrl : MonoBehaviour
                 GameManager.Instance.turnManager.Tick();
                 if(cellData.ContainedObject == null)
                 {
-                    audioSource.PlayOneShot(walkClip);
+                    GameManager.Instance.PlaySound(walkClip);
                     MoveTo(newCellTarget, false);
                 }
                 else
                 {
                     if(cellData.ContainedObject.PlayerWantsToEnter())
                     {
-                        audioSource.PlayOneShot(walkClip);
                         MoveTo(newCellTarget, false);
                     }
                     else
                     {
-                        audioSource.PlayOneShot(breakingWallClip);
                         playerAnim.SetTrigger(BreakWallHash);
                     }
                 }
